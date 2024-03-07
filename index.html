@@ -41,6 +41,13 @@
     <p id="total">Total: $0.00</p>
     <button type="button" id="checkout">Checkout</button>
 </div>
+<div id="employee-controls">
+<!-- add new record -->
+<!-- delete record
+check stock
+delete customer
+search sales -->
+</div>
 <table id="records-table">
     <tbody id="records-table-body">
         <tr>
@@ -146,6 +153,7 @@
     document.getElementById('checkout').addEventListener('click', function() {
         // Display the popup
         alert('Checkout \nTotal: ' + document.getElementById('total').textContent.split('$')[1]);
+        document.getElementById('total').textContent = 'Total: $0.00';
     });
 
     
