@@ -99,6 +99,10 @@
             cursor: pointer;
         }
 
+        #total {
+            display: inline;
+        }
+
         #records-table {
             margin-top: 20px;
             border-collapse: collapse;
