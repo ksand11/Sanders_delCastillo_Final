@@ -1,7 +1,7 @@
         /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #f2f2f2df;
         }
 
         header {
@@ -99,20 +99,37 @@
             cursor: pointer;
         }
 
-        #product-table {
+        #records-table {
             margin-top: 20px;
-            width: 100%;
             border-collapse: collapse;
+            width: 100%;
+            padding: 20px;
         }
-
-        #product-table th,
-        #product-table td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        .datacell-tile {
+        
+        .record-tile {
         background-color: #fff;
-        border: 1px solid #ccc;
         padding: 10px;
         margin-bottom: 10px;
+        border-radius: 25px;
+    }
+
+    .record-tile p {
+        display: inline;
+    }
+
+    #record-price {
+        float: right;
+        font-weight: bold;
+        color: green;
+    }
+
+    #record-cartbtn {
+        padding: 5px 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        float: right;
+        clear: right;
     }

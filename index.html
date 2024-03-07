@@ -37,10 +37,58 @@
     </select>
     <button type="button" id="search-btn">Search</button>
     <button type="button" id="checkout">Checkout</button>
+    <p id="total">Total: $0.00</p>
 </div>
 <table id="records-table">
     <tbody id="records-table-body">
-        
+        <tr>
+            <td class="record-tile">
+                <h2 id="record-title">Title</h2>
+                <p id="record-price">$19.99</p>
+                <p id="record-artist">Artist</p>
+                <p id="record-genre">Genre</p>
+                <br><br>
+                <p id="record-album">Album</p>
+                <p id="record-year">Year</p>
+                <button type="button" id="record-cartbtn">Add to Cart</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="record-tile">
+                <h2 id="record-title">Title</h2>
+                <p id="record-price">$19.99</p>
+                <p id="record-artist">Artist</p>
+                <p id="record-genre">Genre</p>
+                <br><br>
+                <p id="record-album">Album</p>
+                <p id="record-year">Year</p>
+                <button type="button" id="record-cartbtn">Add to Cart</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="record-tile">
+                <h2 id="record-title">Title</h2>
+                <p id="record-price">$19.99</p>
+                <p id="record-artist">Artist</p>
+                <p id="record-genre">Genre</p>
+                <br><br>
+                <p id="record-album">Album</p>
+                <p id="record-year">Year</p>
+                <button type="button" id="record-cartbtn">Add to Cart</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="record-tile">
+                <h2 id="record-title">Title</h2>
+                <p id="record-price">$19.99</p>
+                <p id="record-artist">Artist</p>
+                <p id="record-genre">Genre</p>
+                <br><br>
+                <p id="record-album">Album</p>
+                <p id="record-year">Year</p>
+                <button type="button" id="record-cartbtn">Add to Cart</button>
+            </td>
+        </tr>
     </tbody>
 </table>
 <style>
@@ -78,6 +126,24 @@
         // Display the popup
         alert('SELECT * FROM Records WHERE ' + document.getElementById('filter').value + ' LIKE \'%' + document.getElementById('search-input').value + '%\';');
     });
+
+    // document.getElementById('record-cartbtn').addEventListener('click', function() {
+    //     alert(this.parentElement.value);
+    // });
+
+    document.querySelectorAll('#record-cartbtn').forEach(button => {
+    button.addEventListener('click', function(event) {
+        // Traverse the DOM to find the title associated with the clicked button
+        const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
+        const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
+        const recordPrice = recordTile.querySelector('#record-price').textContent; // Find the price element within the record tile
+
+        // Use the title as needed
+        alert(recordTitle + ' added to cart');
+        document.getElementById('total').textContent = 'Total: $' + (parseFloat(document.getElementById('total').textContent.split('$')[1]) + parseFloat(recordPrice.split('$')[1])).toFixed(2);
+    });
+});
+
     
 // const mysql = require('mysql');
 
