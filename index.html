@@ -1,5 +1,4 @@
-<!-- FILEPATH: /C:/Users/sande/OneDrive/Documents/School/TCSS 445/445_Project_Sanders_delCastillo.html -->
-<!-- BEGIN: abpxx6d04wxr -->
+<!-- Keegan Sanders and Isabelle del Castillo -->
 <html>
 <head>
     <title>Record Store</title>
@@ -7,7 +6,6 @@
     <script src="script.js"></script>
 </head>
 <body>
-<!--nav bar-->
 <header>
     <nav>
         <h1>Record Store</h1>
@@ -162,19 +160,15 @@
     });
     
     document.getElementById('search-btn').addEventListener('click', function() {
-        // Display the popup
         alert('SELECT * FROM Records WHERE ' + document.getElementById('filter').value + ' LIKE \'%' + document.getElementById('search-input').value + '%\' AND is_deleted = 0;');
     });
 
-    // document.getElementById('record-cartbtn').addEventListener('click', function() {
-    //     alert(this.parentElement.value);
-    // });
 
     document.querySelectorAll('#record-cartbtn').forEach(button => {
         button.addEventListener('click', function(event) {
-            const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
-            const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
-            const recordPrice = recordTile.querySelector('#record-price').textContent; // Find the price element within the record tile
+            const recordTile = event.target.closest('.record-tile'); 
+            const recordTitle = recordTile.querySelector('#record-title').textContent; 
+            const recordPrice = recordTile.querySelector('#record-price').textContent; 
 
             alert(recordTitle + ' added to cart');
             document.getElementById('total').textContent = 'Total: $' + (parseFloat(document.getElementById('total').textContent.split('$')[1]) + parseFloat(recordPrice.split('$')[1])).toFixed(2);
@@ -183,8 +177,8 @@
 
     document.querySelectorAll('#delete-recordbtn').forEach(button => {
         button.addEventListener('click', function(event) {
-            const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
-            const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
+            const recordTile = event.target.closest('.record-tile'); 
+            const recordTitle = recordTile.querySelector('#record-title').textContent;
 
             alert('UPDATE Records SET is_deleted = 1 WHERE title = \'' + recordTitle + '\';');
             recordTile.remove();
@@ -192,27 +186,21 @@
     });
 
 
-    // Add a click event listener to the button
     document.getElementById('checkout').addEventListener('click', function() {
-        // Display the popup
         alert('Checkout \nTotal: ' + document.getElementById('total').textContent.split('$')[1]);
         document.getElementById('total').textContent = 'Total: $0.00';
     });
 
     document.getElementById('employee-controls-dropdown').addEventListener('change', function() {
-    // Get the selected value of the dropdown
     var selectedOption = this.value;
-    // Hide all options
     document.getElementById('add-record').style.display = 'none';
     document.getElementById('search-customers').style.display = 'none';
     document.getElementById('search-sales').style.display = 'none';
 
-    // Show the selected option
     document.getElementById(selectedOption).style.display = 'block';
 });
 
 document.getElementById('add-recordbtn').addEventListener('click', function() {
-    // Get the input values
     const title = document.getElementById('title-input').value;
     const artist = document.getElementById('artist-input').value;
     const album = document.getElementById('album-input').value;
@@ -220,57 +208,23 @@ document.getElementById('add-recordbtn').addEventListener('click', function() {
     const year = document.getElementById('year-input').value;
     const price = document.getElementById('price-input').value;
 
-    // Display the popup
     alert('INSERT INTO Records (title, artist, album, genre, year, price) VALUES (\'' + title + '\', \'' + artist + '\', \'' + album + '\', \'' + genre + '\', \'' + year + '\', \'' + price + '\');');
 });
 
 document.getElementById('search-customersbtn').addEventListener('click', function() {
-    // Get the input value
     const customer = document.getElementById('customer-input').value;
 
-    // Display the popup
     alert('SELECT * FROM Users WHERE customerid LIKE \'%' + customer + '%\' OR fname LIKE \'%' + customer + '%\' OR lname LIKE \'%' + customer + '%\' OR phone LIKE \'%' + customer + '%\' OR email LIKE \'%' + customer + '%\' AND is_deleted = 0;');
 });
 
 document.getElementById('search-salesbtn').addEventListener('click', function() {
-    // Get the input value
     const sales = document.getElementById('sales-input').value;
 
-    // Display the popup
     alert('SELECT * FROM Sales WHERE sale_id LIKE \'%' + sales + '%\' OR buyer_id LIKE \'%' + sales + '%\' OR record_id LIKE \'%' + sales + '%\' OR date LIKE \'%' + sales + '%\' OR price LIKE \'%' + sales + '%\' OR quantity LIKE \'%' + sales + '%\';');
 });
 
     
-// const mysql = require('mysql');
 
-// // Create a connection
-// const connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'your_username',
-//     password: 'your_password',
-//     database: 'your_database'
-// });
-
-// // Connect to the database
-// connection.connect((err) => {
-//     if (err) {
-//         console.error('Error connecting to the database:', err);
-//         return;
-//     }
-//     console.log('Connected to the database');
-// });
-
-// // Perform database operations
-// // ...
-
-// // Close the connection
-// connection.end((err) => {
-//     if (err) {
-//         console.error('Error closing the database connection:', err);
-//         return;
-//     }
-//     console.log('Connection closed');
-// });
 
 //     // Search for records
 //     document.getElementById('search-btn').addEventListener('click', function() {
