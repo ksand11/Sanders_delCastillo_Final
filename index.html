@@ -10,23 +10,33 @@
 <!--nav bar-->
 <header>
     <nav>
-        <input type="text" placeholder="Search">
-        <button type="submit" id="search">Search</button>
-        <button type="button" id="checkout">Checkout</button>
-        <button type="button" id="login">Login</button>
-        <p>or <span id="sign-up">Sign up</span></p>
+        <h1>Record Store</h1>
+        <div id="login-sign-up-div">
+            <button type="button" id="loginbtn">Login</button>
+            <p>or <span id="sign-upbtn">Sign up</span></p>
+        </div>
     </nav>
 </header>
-<!-- search bar with filter options -->
+<div id="login-box" style="display: none;">
+    <input type="text" id="login-input" placeholder="Email or Phone">
+</div>
+<div id="sign-up-box" style="display: none;">
+    <input type="text" id="fname-input" placeholder="First name">
+    <input type="text" id="lname-input" placeholder="Last name">
+    <input type="text" id="email-input" placeholder="Email">
+    <input type="text" id="phone-input" placeholder="Phone Number">
+</div>
 <div id="search-bar">
-    <input type="text" placeholder="Search">
+    <input type="text" id="search-input" placeholder="Search">
     <select id="filter">
-        <option value="all">All</option>
-        <option value="artist">Artist</option>
-        <option value="album">Album</option>
-        <option value="genre">Genre</option>
+        <option value="Title">Title</option>
+        <option value="Artist">Artist</option>
+        <option value="Album">Album</option>
+        <option value="Genre">Genre</option>
+        <option value="Year">Year</option>
     </select>
-    <button type="button" id="filter-btn">Filter</button>
+    <button type="button" id="search-btn">Search</button>
+    <button type="button" id="checkout">Checkout</button>
 </div>
 <table id="records-table">
     <tbody id="records-table-body">
@@ -34,150 +44,166 @@
     </tbody>
 </table>
 <style>
+</style>
+<script>
     // Add a click event listener to the button
     document.getElementById('checkout').addEventListener('click', function() {
         // Display the popup
         alert('Checkout Popup');
     });
     
-    document.getElementById('login').addEventListener('click', function() {
-        // Display the popup
-        alert('Login Popup');
+    document.getElementById('loginbtn').addEventListener('click', function() {
+        if (document.getElementById('login-box').style.display != 'none') {
+            alert('SELECT * FROM Users WHERE email = \'' + document.getElementById('login-input').value + '\' OR phone = \'' + document.getElementById('login-input').value + '\';');
+            document.getElementById('login-sign-up-div').style.visibility = 'hidden';
+            document.getElementById('login-box').style.display = 'none';
+        } else {
+            document.getElementById('sign-up-box').style.display = 'none';
+            document.getElementById('login-box').style.display = 'block';
+        }
     });
     
-    document.getElementById('sign-up').addEventListener('click', function() {
-        // Display the popup
-        alert('Sign up Popup');
+    document.getElementById('sign-upbtn').addEventListener('click', function() {
+        if (document.getElementById('sign-up-box').style.display != 'none') {
+            alert('INSERT INTO Users (fname, lname, email, phone) VALUES (\'' + document.getElementById('fname-input').value + '\', \'' + document.getElementById('lname-input').value + '\', \'' + document.getElementById('email-input').value + '\', \'' + document.getElementById('phone-input').value + '\');');
+            document.getElementById('login-sign-up-div').style.visibility = 'hidden';
+            document.getElementById('sign-up-box').style.display = 'none';
+        } else {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('sign-up-box').style.display = 'block';
+        }
     });
     
-const mysql = require('mysql');
+    document.getElementById('search-btn').addEventListener('click', function() {
+        // Display the popup
+        alert('SELECT * FROM Records WHERE ' + document.getElementById('filter').value + ' LIKE \'%' + document.getElementById('search-input').value + '%\';');
+    });
+    
+// const mysql = require('mysql');
 
-// Create a connection
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'your_username',
-    password: 'your_password',
-    database: 'your_database'
-});
+// // Create a connection
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'your_username',
+//     password: 'your_password',
+//     database: 'your_database'
+// });
 
-// Connect to the database
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the database');
-});
+// // Connect to the database
+// connection.connect((err) => {
+//     if (err) {
+//         console.error('Error connecting to the database:', err);
+//         return;
+//     }
+//     console.log('Connected to the database');
+// });
 
-// Perform database operations
-// ...
+// // Perform database operations
+// // ...
 
-// Close the connection
-connection.end((err) => {
-    if (err) {
-        console.error('Error closing the database connection:', err);
-        return;
-    }
-    console.log('Connection closed');
-});
+// // Close the connection
+// connection.end((err) => {
+//     if (err) {
+//         console.error('Error closing the database connection:', err);
+//         return;
+//     }
+//     console.log('Connection closed');
+// });
 
-    // Search for records
-    document.getElementById('search').addEventListener('click', function() {
-        // Get the search query from the input field
-        const searchQuery = document.getElementById('search-input').value;
-
-        // Perform the database query
-        connection.query('SELECT * FROM Records WHERE name LIKE ?', '%' + searchQuery + '%', (err, rows) => {
-            if (err) {
-                console.error('Error executing the query:', err);
-                return;
-            }
-            console.log('Search results:', rows);
-            // Display the search results on the page
-            // ...
-    // Fetch records from the database
-    connection.query('SELECT * FROM Records', (err, rows) => {
-        if (err) {
-            console.error('Error fetching records:', err);
-            return;
-        }
+//     // Search for records
+//     document.getElementById('search-btn').addEventListener('click', function() {
+//         // Get the search query from the input field
+//         const filter = document.getElementById('filter').value;
+//         const searchQuery = document.getElementById('search-input').value;
+//         connection.query('SELECT * FROM Records WHERE ' + searchFiliter + ' LIKE ?', '%' + searchQuery + '%', (err, rows) => {
+//             if (err) {
+//                 console.error('Error executing the query:', err);
+//                 return;
+//             }
+//             console.log('Search results:', rows);
+//             // Display the search results on the page
+//             // ...
+//     // Fetch records from the database
+//     connection.query('SELECT * FROM Records', (err, rows) => {
+//         if (err) {
+//             console.error('Error fetching records:', err);
+//             return;
+//         }
         
-        // Get the table body element
-        const tableBody = document.getElementById('records-table-body');
+//         // Get the table body element
+//         const tableBody = document.getElementById('records-table-body');
         
-        // Clear existing table rows
-        tableBody.innerHTML = '';
+//         // Clear existing table rows
+//         tableBody.innerHTML = '';
         
-        // Generate HTML markup for each record
-        rows.forEach((record) => {
-            const row = document.createElement('tr');
+//         // Generate HTML markup for each record
+//         rows.forEach((record) => {
+//             const row = document.createElement('tr');
             
-            const recordTile = document.createElement('td');
-            const recordTitle = document.createElement('h2');
-            const recordArtist = document.createElement('p');
-            const recordAlbum = document.createElement('p');
-            const recordGenre = document.createElement('p');
-            const recordPrice = document.createElement('p');
-            const addBtn = document.createElement('button');
+//             const recordTile = document.createElement('td');
+//             const recordTitle = document.createElement('h2');
+//             const recordArtist = document.createElement('p');
+//             const recordAlbum = document.createElement('p');
+//             const recordGenre = document.createElement('p');
+//             const recordPrice = document.createElement('p');
+//             const addBtn = document.createElement('button');
             
-            recordTitle.textContent = 'Record Title';
-            recordArtist.textContent = 'Record Artist';
-            recordAlbum.textContent = 'Record Album';
-            recordGenre.textContent = 'Record Genre';
-            recordPrice.textContent = 'Record Price';
+//             recordTitle.textContent = 'Record Title';
+//             recordArtist.textContent = 'Record Artist';
+//             recordAlbum.textContent = 'Record Album';
+//             recordGenre.textContent = 'Record Genre';
+//             recordPrice.textContent = 'Record Price';
 
-            addBtn.textContent = 'Add to Cart'; // Add a click event listener to the button
-            addBtn.addEventListener('click', function() {
-                // Add the record to the cart
-                alert('Record added to cart');
-            });
+//             addBtn.textContent = 'Add to Cart'; // Add a click event listener to the button
+//             addBtn.addEventListener('click', function() {
+//                 // Add the record to the cart
+//                 alert('Record added to cart');
+//             });
 
-            recordTile.appendChild(recordTitle);
-            recordTile.appendChild(recordArtist);
-            recordTile.appendChild(recordAlbum);
-            recordTile.appendChild(recordGenre);
-            recordTile.appendChild(recordPrice);
-            recordTile.appendChild(addBtn);
-            row.appendChild(recordTile);          
-            tableBody.appendChild(row);
+//             recordTile.appendChild(recordTitle);
+//             recordTile.appendChild(recordArtist);
+//             recordTile.appendChild(recordAlbum);
+//             recordTile.appendChild(recordGenre);
+//             recordTile.appendChild(recordPrice);
+//             recordTile.appendChild(addBtn);
+//             row.appendChild(recordTile);          
+//             tableBody.appendChild(row);
             
-        });
-    });
-        });
-    });
+//         });
+//     });
+//         });
+//     });
 
-    // Insert a new record
-    const newRecord = { name: 'John Doe', age: 25, email: 'johndoe@example.com' };
-    connection.query('INSERT INTO Records SET ?', newRecord, (err, result) => {
-        if (err) {
-            console.error('Error inserting a new record:', err);
-            return;
-        }
-        console.log('New record inserted:', result);
-    });
+//     // Insert a new record
+//     const newRecord = { name: 'John Doe', age: 25, email: 'johndoe@example.com' };
+//     connection.query('INSERT INTO Records SET ?', newRecord, (err, result) => {
+//         if (err) {
+//             console.error('Error inserting a new record:', err);
+//             return;
+//         }
+//         console.log('New record inserted:', result);
+//     });
 
-    // Delete a record
-    connection.query('DELETE FROM Records WHERE id = ?', [1], (err, result) => {
-        if (err) {
-            console.error('Error deleting a record:', err);
-            return;
-        }
-        console.log('Record deleted:', result);
-    });
+//     // Delete a record
+//     connection.query('DELETE FROM Records WHERE id = ?', [1], (err, result) => {
+//         if (err) {
+//             console.error('Error deleting a record:', err);
+//             return;
+//         }
+//         console.log('Record deleted:', result);
+//     });
 
-    // Update an existing record
-    const updatedRecord = { name: 'Jane Doe', age: 30, email: 'janedoe@example.com' };
-    const recordId = 1; // Assuming you want to update the record with id 1
-    connection.query('UPDATE Records SET ? WHERE id = ?', [updatedRecord, recordId], (err, result) => {
-        if (err) {
-            console.error('Error updating the record:', err);
-            return;
-        }
-        console.log('Record updated:', result);
-    });
+//     // Update an existing record
+//     const updatedRecord = { name: 'Jane Doe', age: 30, email: 'janedoe@example.com' };
+//     const recordId = 1; // Assuming you want to update the record with id 1
+//     connection.query('UPDATE Records SET ? WHERE id = ?', [updatedRecord, recordId], (err, result) => {
+//         if (err) {
+//             console.error('Error updating the record:', err);
+//             return;
+//         }
+//         console.log('Record updated:', result);
+//     });
 
-</style>
-<script>
 
 </script>
 </body>
