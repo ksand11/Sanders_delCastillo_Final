@@ -13,7 +13,8 @@
         <h1>Record Store</h1>
         <div id="login-sign-up-div">
             <button type="button" id="loginbtn">Login</button>
-            <p>or <span id="sign-upbtn">Sign up</span></p>
+            <p id="sign-up-text">or <span id="sign-upbtn">Sign up</span></p>
+            <p  id="logoutbtn" style="display: none;">You are logged in <br><span id="logout-span"><strong>Logout</strong></span></p>
         </div>
     </nav>
 </header>
@@ -42,17 +43,38 @@
     <button type="button" id="checkout">Checkout</button>
 </div>
 <div id="employee-controls">
-<!-- add new record -->
-<!-- delete record
-check stock
-delete customer
-search sales -->
+    <h3>Employee Controls</h3>
+    <select id="employee-controls-dropdown">
+        <option value="select">Select</option>
+        <option value="add-record">Add Record</option>
+        <option value="search-customers">Search Customers</option>
+        <option value="search-sales">Search Sales</option>
+    </select>
+    <div id="add-record" style="display: none;">
+        <input type="text" id="title-input" placeholder="Title">
+        <input type="text" id="artist-input" placeholder="Artist">
+        <input type="text" id="album-input" placeholder="Album">
+        <br>
+        <input type="text" id="genre-input" placeholder="Genre">
+        <input type="text" id="year-input" placeholder="Year">
+        <input type="text" id="price-input" placeholder="Price">
+        <button type="button" id="add-recordbtn">Add Record</button>
+    </div>
+    <div id="search-customers" style="display: none;">
+        <input type="text" id="customer-input" placeholder="Search">
+        <button type="button" id="search-customersbtn">Search Customers</button>
+    </div>
+    <div id="search-sales" style="display: none;">
+        <input type="text" id="sales-input" placeholder="Search">
+        <button type="button" id="search-salesbtn">Search Sales</button>
+    </div>
 </div>
 <table id="records-table">
     <tbody id="records-table-body">
         <tr>
             <td class="record-tile">
                 <h2 id="record-title">Title</h2>
+                <button type="button" id="delete-recordbtn">Delete</button>
                 <p id="record-price">$19.99</p>
                 <p id="record-artist">Artist</p>
                 <p id="record-genre">Genre</p>
@@ -65,6 +87,7 @@ search sales -->
         <tr>
             <td class="record-tile">
                 <h2 id="record-title">Title</h2>
+                <button type="button" id="delete-recordbtn">Delete</button>
                 <p id="record-price">$19.99</p>
                 <p id="record-artist">Artist</p>
                 <p id="record-genre">Genre</p>
@@ -77,6 +100,7 @@ search sales -->
         <tr>
             <td class="record-tile">
                 <h2 id="record-title">Title</h2>
+                <button type="button" id="delete-recordbtn">Delete</button>
                 <p id="record-price">$19.99</p>
                 <p id="record-artist">Artist</p>
                 <p id="record-genre">Genre</p>
@@ -89,6 +113,7 @@ search sales -->
         <tr>
             <td class="record-tile">
                 <h2 id="record-title">Title</h2>
+                <button type="button" id="delete-recordbtn">Delete</button>
                 <p id="record-price">$19.99</p>
                 <p id="record-artist">Artist</p>
                 <p id="record-genre">Genre</p>
@@ -106,9 +131,11 @@ search sales -->
     
     document.getElementById('loginbtn').addEventListener('click', function() {
         if (document.getElementById('login-box').style.display != 'none') {
-            alert('SELECT * FROM Users WHERE email = \'' + document.getElementById('login-input').value + '\' OR phone = \'' + document.getElementById('login-input').value + '\';');
-            document.getElementById('login-sign-up-div').style.visibility = 'hidden';
+            alert('SELECT * FROM Customers WHERE email = \'' + document.getElementById('login-input').value + '\' OR phone = \'' + document.getElementById('login-input').value + '\' AND is_deleted = 0;');
+            document.getElementById('loginbtn').style.visibility = 'hidden';
             document.getElementById('login-box').style.display = 'none';
+            document.getElementById('sign-up-text').style.display = 'none';
+            document.getElementById('logoutbtn').style.display = 'block';
         } else {
             document.getElementById('sign-up-box').style.display = 'none';
             document.getElementById('login-box').style.display = 'block';
@@ -118,17 +145,25 @@ search sales -->
     document.getElementById('sign-upbtn').addEventListener('click', function() {
         if (document.getElementById('sign-up-box').style.display != 'none') {
             alert('INSERT INTO Users (fname, lname, email, phone) VALUES (\'' + document.getElementById('fname-input').value + '\', \'' + document.getElementById('lname-input').value + '\', \'' + document.getElementById('email-input').value + '\', \'' + document.getElementById('phone-input').value + '\');');
-            document.getElementById('login-sign-up-div').style.visibility = 'hidden';
+            document.getElementById('loginbtn').style.visibility = 'hidden';
             document.getElementById('sign-up-box').style.display = 'none';
+            document.getElementById('sign-up-text').style.display = 'none';
+            document.getElementById('logoutbtn').style.display = 'block';
         } else {
             document.getElementById('login-box').style.display = 'none';
             document.getElementById('sign-up-box').style.display = 'block';
         }
     });
+
+    document.getElementById('logoutbtn').addEventListener('click', function() {
+        document.getElementById('loginbtn').style.visibility = 'visible';
+        document.getElementById('sign-up-text').style.display = 'block';
+        document.getElementById('logoutbtn').style.display = 'none';
+    });
     
     document.getElementById('search-btn').addEventListener('click', function() {
         // Display the popup
-        alert('SELECT * FROM Records WHERE ' + document.getElementById('filter').value + ' LIKE \'%' + document.getElementById('search-input').value + '%\';');
+        alert('SELECT * FROM Records WHERE ' + document.getElementById('filter').value + ' LIKE \'%' + document.getElementById('search-input').value + '%\' AND is_deleted = 0;');
     });
 
     // document.getElementById('record-cartbtn').addEventListener('click', function() {
@@ -136,17 +171,25 @@ search sales -->
     // });
 
     document.querySelectorAll('#record-cartbtn').forEach(button => {
-    button.addEventListener('click', function(event) {
-        // Traverse the DOM to find the title associated with the clicked button
-        const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
-        const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
-        const recordPrice = recordTile.querySelector('#record-price').textContent; // Find the price element within the record tile
+        button.addEventListener('click', function(event) {
+            const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
+            const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
+            const recordPrice = recordTile.querySelector('#record-price').textContent; // Find the price element within the record tile
 
-        // Use the title as needed
-        alert(recordTitle + ' added to cart');
-        document.getElementById('total').textContent = 'Total: $' + (parseFloat(document.getElementById('total').textContent.split('$')[1]) + parseFloat(recordPrice.split('$')[1])).toFixed(2);
+            alert(recordTitle + ' added to cart');
+            document.getElementById('total').textContent = 'Total: $' + (parseFloat(document.getElementById('total').textContent.split('$')[1]) + parseFloat(recordPrice.split('$')[1])).toFixed(2);
+        });
     });
-});
+
+    document.querySelectorAll('#delete-recordbtn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            const recordTile = event.target.closest('.record-tile'); // Find the closest parent element with class .record-tile
+            const recordTitle = recordTile.querySelector('#record-title').textContent; // Find the title element within the record tile
+
+            alert('UPDATE Records SET is_deleted = 1 WHERE title = \'' + recordTitle + '\';');
+            recordTile.remove();
+        });
+    });
 
 
     // Add a click event listener to the button
@@ -155,6 +198,47 @@ search sales -->
         alert('Checkout \nTotal: ' + document.getElementById('total').textContent.split('$')[1]);
         document.getElementById('total').textContent = 'Total: $0.00';
     });
+
+    document.getElementById('employee-controls-dropdown').addEventListener('change', function() {
+    // Get the selected value of the dropdown
+    var selectedOption = this.value;
+    // Hide all options
+    document.getElementById('add-record').style.display = 'none';
+    document.getElementById('search-customers').style.display = 'none';
+    document.getElementById('search-sales').style.display = 'none';
+
+    // Show the selected option
+    document.getElementById(selectedOption).style.display = 'block';
+});
+
+document.getElementById('add-recordbtn').addEventListener('click', function() {
+    // Get the input values
+    const title = document.getElementById('title-input').value;
+    const artist = document.getElementById('artist-input').value;
+    const album = document.getElementById('album-input').value;
+    const genre = document.getElementById('genre-input').value;
+    const year = document.getElementById('year-input').value;
+    const price = document.getElementById('price-input').value;
+
+    // Display the popup
+    alert('INSERT INTO Records (title, artist, album, genre, year, price) VALUES (\'' + title + '\', \'' + artist + '\', \'' + album + '\', \'' + genre + '\', \'' + year + '\', \'' + price + '\');');
+});
+
+document.getElementById('search-customersbtn').addEventListener('click', function() {
+    // Get the input value
+    const customer = document.getElementById('customer-input').value;
+
+    // Display the popup
+    alert('SELECT * FROM Users WHERE customerid LIKE \'%' + customer + '%\' OR fname LIKE \'%' + customer + '%\' OR lname LIKE \'%' + customer + '%\' OR phone LIKE \'%' + customer + '%\' OR email LIKE \'%' + customer + '%\' AND is_deleted = 0;');
+});
+
+document.getElementById('search-salesbtn').addEventListener('click', function() {
+    // Get the input value
+    const sales = document.getElementById('sales-input').value;
+
+    // Display the popup
+    alert('SELECT * FROM Sales WHERE sale_id LIKE \'%' + sales + '%\' OR buyer_id LIKE \'%' + sales + '%\' OR record_id LIKE \'%' + sales + '%\' OR date LIKE \'%' + sales + '%\' OR price LIKE \'%' + sales + '%\' OR quantity LIKE \'%' + sales + '%\';');
+});
 
     
 // const mysql = require('mysql');
