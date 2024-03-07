@@ -94,11 +94,6 @@
 <style>
 </style>
 <script>
-    // Add a click event listener to the button
-    document.getElementById('checkout').addEventListener('click', function() {
-        // Display the popup
-        alert('Checkout Popup');
-    });
     
     document.getElementById('loginbtn').addEventListener('click', function() {
         if (document.getElementById('login-box').style.display != 'none') {
@@ -143,6 +138,13 @@
         document.getElementById('total').textContent = 'Total: $' + (parseFloat(document.getElementById('total').textContent.split('$')[1]) + parseFloat(recordPrice.split('$')[1])).toFixed(2);
     });
 });
+
+
+    // Add a click event listener to the button
+    document.getElementById('checkout').addEventListener('click', function() {
+        // Display the popup
+        alert('Checkout \nTotal: ' + document.getElementById('total').textContent.split('$')[1]);
+    });
 
     
 // const mysql = require('mysql');
